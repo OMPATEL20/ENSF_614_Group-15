@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #ffcc00;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: right;
+        }
+        .header img {
+            max-width: 80px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333333;
+            font-weight: bold;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .content h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 16px;
+            color: #555555;
+            line-height: 1.6;
+        }
+        .details {
+            background-color: #f9f9f9;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .details h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .details p {
+            margin: 5px 0;
+            color: #333333;
+        }
+        .footer {
+            background-color: #f3f3f3;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer p {
+            font-size: 14px;
+            color: #777777;
+        }
+        .footer span {
+            font-weight: bold;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://i.ibb.co/fMzPqKh/tick.png" alt="Ticket Icon" style="max-width: 80px;">
+            <h1>Thank You for Booking in Acmeplex!</h1>
+            <img src="https://media.giphy.com/media/l3vR4yk0X20KimqJ2/giphy.gif" alt="Thank You GIF" style="margin-left: 50px;">
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <h2>Your Reservation is Confirmed 🎉</h2>
+            <p>
+                Dear Movie Enthusiast,<br>
+                Thank you for choosing our service for your movie experience. Here are your reservation details:
+            </p>
+
+            <!-- Reservation Details -->
+            <div class="details">
+                <h3>🎥 Reservation Details:</h3>
+                <p><strong>Theater:</strong> <span th:text="${theater}">Theater</span></p>
+                <p><strong>Movie:</strong> <span th:text="${movie}">Movie</span></p>
+                <p><strong>Showtime:</strong> <span th:text="${showTime}">Showtime</span></p>
+                <p><strong>Total Price:</strong> $<span th:text="${totalPrice}">Total Price</span></p>
+                <p><strong>Selected Seats:</strong> <span th:text="${selectedSeats}">Selected Seats</span></p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><span>Made with ❤️ by Group 15 ENSF 614</span></p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #ffcc00;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: right;
+        }
+        .header img {
+            max-width: 80px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333333;
+            font-weight: bold;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .content h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 16px;
+            color: #555555;
+            line-height: 1.6;
+        }
+        .details {
+            background-color: #f9f9f9;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .details h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .details p {
+            margin: 5px 0;
+            color: #333333;
+        }
+        .footer {
+            background-color: #f3f3f3;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer p {
+            font-size: 14px;
+            color: #777777;
+        }
+        .footer span {
+            font-weight: bold;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+         Header 
+        <div class="header">
+             Left Image 
+            <img src="https://i.ibb.co/fMzPqKh/tick.png" alt="Ticket Icon" style="max-width: 80px;">
+
+             Center Text 
+            <h1>Thank You for Booking in Acmeplex!</h1>
+
+             Right Image 
+            <img src="https://media.giphy.com/media/l3vR4yk0X20KimqJ2/giphy.gif" alt="Thank You GIF" style="margin-left: 50px;">
+        </div>
+
+         Content 
+        <div class="content">
+            <h2>Your Reservation is Confirmed 🎉</h2>
+            <p>
+                Dear Movie Enthusiast,<br>
+                Thank you for choosing our service for your movie experience. Here are your reservation details:
+            </p>
+
+             Reservation Details 
+            <div class="details">
+                <h3>🎥 Reservation Details:</h3>
+                <p><strong>Theater:</strong> <span th:text="${theater}">Theater</span></p>
+                <p><strong>Movie:</strong> <span th:text="${movie}">Movie</span></p>
+                <p><strong>Showtime:</strong> <span th:text="${showTime}">Showtime</span></p>
+                <p><strong>Total Price:</strong> $<span th:text="${totalPrice}">Total Price</span></p>
+            </div>
+        </div>
+
+         Footer 
+        <div class="footer">
+            <p><span>Made with ❤️ by Group 15 ENSF 614</span></p>
+        </div>
+    </div>
+</body>
+</html>-->
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #ffcc00;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: right;
+            position: relative;
+        }
+        .header img {
+            max-width: 80px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333333;
+            font-weight: bold;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .content h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 16px;
+            color: #555555;
+            line-height: 1.6;
+        }
+        .details {
+            background-color: #f9f9f9;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .details h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .details p {
+            margin: 5px 0;
+            color: #333333;
+        }
+        .footer {
+            background-color: #f3f3f3;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer p {
+            font-size: 14px;
+            color: #777777;
+        }
+        .footer span {
+            font-weight: bold;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+         Header 
+        <div class="header">
+             Left Image 
+            <img src="https://i.ibb.co/fMzPqKh/tick.png" alt="Ticket Icon" style="max-width: 80px;">
+
+             Center Text 
+            <h1>Thank You for Booking in Acmeplex!</h1>
+
+             Right Image 
+                    <img src="https://media.giphy.com/media/l3vR4yk0X20KimqJ2/giphy.gif" alt="Thank You GIF" style="margin-left: 50px;">
+        </div>
+
+         Content 
+        <div class="content">
+            <h2>Your Reservation is Confirmed 🎉</h2>
+            <p>
+                Dear Movie Enthusiast,<br>
+                Thank you for choosing our service for your movie experience. Here are your reservation details:
+            </p>
+
+             Reservation Details 
+            <div class="details">
+                <h3>🎥 Reservation Details:</h3>
+                <p><strong>Theater:</strong> {{theater}}</p>
+                <p><strong>Movie:</strong> {{movie}}</p>
+                <p><strong>Showtime:</strong> {{showTime}}</p>
+                <p><strong>Total Price:</strong> ${{totalPrice}}</p>
+            </div>
+        </div>
+
+         Footer 
+        <div class="footer">
+            <p><span>Made with ❤️ by Group 15 ENSF 614</span></p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #ffcc00;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        .header img {
+            max-width: 100px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333333;
+            text-align: center;
+            flex: 1;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .content h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .content p {
+            font-size: 16px;
+            color: #555555;
+            line-height: 1.6;
+        }
+        .details {
+            background-color: #f9f9f9;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .details h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .details p {
+            margin: 5px 0;
+            color: #333333;
+        }
+        .footer {
+            background-color: #f3f3f3;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer img {
+            max-width: 200px;
+            margin: 10px 0;
+        }
+        .footer p {
+            font-size: 14px;
+            color: #777777;
+        }
+        .footer span {
+            font-weight: bold;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+         Header 
+        <div class="header">
+            <img src="https://i.ibb.co/fMzPqKh/tick.png" alt="Ticket">
+            <h1>Thank You for Booking!</h1>
+            <img src="https://media.giphy.com/media/l3vR4yk0X20KimqJ2/giphy.gif" alt="Celebration GIF">
+        </div>
+
+         Content 
+        <div class="content">
+            <h2>Your Reservation is Confirmed 🎉</h2>
+            <p>
+                Dear Movie Enthusiast,<br>
+                Thank you for choosing our service for your movie experience. Here are your reservation details:
+            </p>
+
+             Reservation Details 
+            <div class="details">
+                <h3>🎥 Reservation Details:</h3>
+                <p><strong>Theater:</strong> {{theater}}</p>
+                <p><strong>Movie:</strong> {{movie}}</p>
+                <p><strong>Showtime:</strong> {{showTime}}</p>
+                <p><strong>Total Price:</strong> ${{totalPrice}}</p>
+            </div>
+        </div>
+
+         Footer 
+        <div class="footer">
+            <p><span>Made with ❤️ by Group 15 ENSF 614</span></p>
+        </div>
+    </div>
+</body>
+</html>
+
+-->

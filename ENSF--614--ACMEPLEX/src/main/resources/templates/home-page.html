@@ -1,0 +1,399 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Reservation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        header {
+            background-color: #343a40;
+            color: #fff;
+            padding: 15px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .seating-chart {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .seat {
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #ddd;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .seat.selected {
+            background-color: #0f07ff;
+        }
+
+        .seat.occupied {
+            background-color: #dc3545;
+            cursor: not-allowed;
+        }
+
+        .seat:hover:not(.occupied) {
+            background-color: #ffc107;
+        }
+
+        .theater-container {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .screen {
+            width: 100%;
+            background: #333;
+            color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .row-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .seat {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 1px solid #ccc;
+        }
+
+        .seat:hover {
+            transform: scale(1.1);
+        }
+
+        .seat.available {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .seat.booked {
+            background-color: #dc3545;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .seat.selected {
+            background-color: #0f07ff;
+            color: white;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .legend-available {
+            background-color: #28a745;
+        }
+
+        .legend-booked {
+            background-color: #dc3545;
+        }
+
+        .legend-selected {
+            background-color: #0f07ff;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header style="background-color: #28a745; color: #fff; padding: 15px;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 style="margin: 0; font-size: 1.5rem;">Movie Reservation</h1>
+            <form th:action="@{/logout}" method="post" class="mb-0">
+                <button type="submit" class="btn btn-outline-light" style="border-color: #fff; color: #fff;">Logout</button>
+					<button type="button" class="btn btn-danger" id="cancelButton" onclick="redirectToCancelForm()">Cancel Ticket</button>
+            </form>
+        </div>
+    </header>
+
+    <div class="container py-4">
+        <div class="form-container">
+            <div class="form-section">
+                <h2>Select Theater</h2>
+                <form th:action="@{/theater-selection}" method="get">
+                    <label for="theater" class="form-label">Theater</label>
+                    <select id="theaterSelect" class="form-select" onchange="showSeats()">
+                        <option value="" disabled selected>Select a theater</option>
+                        <option th:each="theater : ${theaters}" th:value="${theater.id}" th:text="${theater.name}"></option>
+                    </select>
+                </form>
+            </div>
+			
+			
+			
+			<div class="form-section">
+			    <h2>Select Movie</h2>
+			    <form th:action="@{/movie-selection}" method="get">
+			        <label for="movieSelect" class="form-label">Search Movie</label>
+			        <input type="text" id="movieSelect" class="form-control" placeholder="Search for a movie" oninput="filterMovies()">
+			        <ul id="movieList" class="list-group mt-2">
+			            <li class="list-group-item" th:each="movie : ${movies}" th:attr="data-title=${movie.title}" 
+			                th:value="${movie.movieId}" th:text="${movie.title}" onclick="selectMovie(this)">
+			            </li>
+			        </ul>
+			        <input type="hidden" id="movieInput" name="movie">
+			    </form>
+			</div>
+			
+			</div>
+			
+            <!--<div class="form-section">
+                <h2>Select Movie</h2>
+                <form th:action="@{/movie-selection}" method="get">
+                    <label for="movie" class="form-label">Movie</label>
+                    <select id="movieSelect" name="movie" class="form-select">
+                        <option value="" disabled selected>Select a Movie</option>
+                        <option th:each="movie : ${movies}" th:value="${movie.movieId}" th:text="${movie.title}"></option>
+                    </select>
+                </form>
+            </div>
+        </div>-->
+
+        <div class="form-section mt-4">
+            <h2>Select Showtime</h2>
+            <label for="showTime" class="form-label">Available Show Times</label>
+            <select id="showTime" name="showTime" class="form-select">
+                <option value="" disabled selected>Select a Show Time</option>
+                <option th:each="showTime : ${showTimes}" th:value="${showTime}" th:text="${showTime}"></option>
+            </select>
+        </div>
+
+        <div id="seatSelection" class="hidden">
+            <h2 class="text-center my-4">Select Your Seat</h2>
+            <div class="theater-container">
+                <div class="screen">Screen</div>
+                <div th:each="entry : ${seatMap}">
+                    <div class="row-container">
+                        <div th:each="seat : ${entry.value}" 
+                             th:classappend="'seat ' + (${seat.isAvailable} ? 'available' : 'booked')"
+                             th:text="'R' + ${seat.row} + '-S' + ${seat.number}"
+                             th:onclick="${seat.isAvailable} ? 'selectSeat(' + ${seat.row} + ',' + ${seat.number} + ')' : null">
+                        </div>
+                    </div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-box legend-available"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box legend-booked"></div>
+                        <span>Booked</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box legend-selected"></div>
+                        <span>Selected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <h3>Total Price: <span id="totalPrice">$0</span></h3>
+            <button type="button" class="btn btn-primary" id="purchaseButton" onclick="redirectToPaymentForm()">Purchase</button>
+			<button type="button" class="btn btn-danger" id="cancelButton" onclick="redirectToCancelForm()">Cancel Ticket</button>
+			</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let seatPrice = 15;
+		let totalReservedSeats = 0;
+        function showSeats() {
+            const theaterSelect = document.getElementById('theaterSelect');
+            const seatSelection = document.getElementById('seatSelection');
+            if (theaterSelect.value) {
+                seatSelection.classList.remove('hidden');
+            } else {
+                seatSelection.classList.add('hidden');
+            }
+        }
+
+        
+		function selectSeat(row, number) {
+		    const seatElement = event.target;
+
+		    // Check if seat is available
+		    if (seatElement.classList.contains('available')) {
+		        seatElement.classList.remove('available');
+		        seatElement.classList.add('selected');
+		    }
+
+		    // Log the number of selected seats and the total reserved seats
+		    const selectedSeats = document.querySelectorAll('.seat.selected').length;
+		    console.log(`Selected seats: ${selectedSeats}`);
+		    console.log(`Total reserved seats (10% limit): ${totalReservedSeats}`);
+
+		    // Enforce 10% seat selection limit
+		    if (selectedSeats > totalReservedSeats) {
+		        alert("You cannot select more than 10% of the available seats.");
+		        seatElement.classList.remove('selected');
+		        seatElement.classList.add('available');
+		    }
+
+		    updateTotalPrice();
+		}
+
+		
+		
+		
+		
+        function updateTotalPrice() {
+            const selectedSeats = document.querySelectorAll('.seat.selected').length;
+            const totalPrice = selectedSeats * seatPrice;
+            document.getElementById('totalPrice').textContent = `$${totalPrice}`;
+        }
+	
+		function redirectToPaymentForm() {  	
+		    const selectedSeats = [...document.querySelectorAll('.seat.selected')].map(seat => seat.textContent).join(',');
+		    const totalPrice = document.getElementById('totalPrice').textContent.replace('$', '');
+		    const theater = document.getElementById('theaterSelect').value;
+			//const theaterText = document.getElementById('theaterSelect').options[theaterSelect.selectedIndex].text;
+			const theaterText = theaterSelect.options[theaterSelect.selectedIndex]?.text;
+		    const movie = document.getElementById('movieInput').value;
+			 const movieText = document.getElementById('movieSelect').value; 
+		    const showTime = document.getElementById('showTime').value;
+
+		    // Validate required fields
+		    if (!theater || !movie || !showTime || !selectedSeats) {
+		        alert('Please complete all selections before proceeding.');
+		        return;
+		    }
+
+		    // Build the URL with query parameters
+		    const url = `/PurchaseForm?theater=${encodeURIComponent(theater)}&theaterText=${encodeURIComponent(theaterText)}&movie=${encodeURIComponent(movieText)}&movieText=${encodeURIComponent(movieText)}&showTime=${encodeURIComponent(showTime)}&totalPrice=${encodeURIComponent(totalPrice)}&selectedSeats=${encodeURIComponent(selectedSeats)}`;
+
+		    // Redirect to /PurchaseForm
+		    window.location.href = url;
+			
+		}
+
+		
+
+
+
+		function redirectToCancelForm() {
+				    // const theater = document.getElementById('theaterSelect').value;
+				    // const movie = document.getElementById('movie').value;
+				    // const showTime = document.getElementById('showTime').value;
+				    // const selectedSeats = [...document.querySelectorAll('.seat.selected')].map(seat => seat.textContent).join(',');
+
+				    // if (!theater || !movie || !showTime || !selectedSeats) {
+				    //     alert('Please complete all selections before proceeding.');
+				    //     return;
+				    // }
+
+				    // const url = `/CancelForm?theater=${encodeURIComponent(theater)}&movie=${encodeURIComponent(movie)}&showTime=${encodeURIComponent(showTime)}&selectedSeats=${encodeURIComponent(selectedSeats)}`;
+		            const url = `/CancelForm`;
+
+				    window.location.href = url;
+				}
+
+		
+		
+		
+		function filterMovies() {
+		       const searchInput = document.getElementById('movieSelect').value.toLowerCase();
+		       const movieList = document.getElementById('movieList').getElementsByTagName('li');
+		       for (let movie of movieList) {
+		           const title = movie.getAttribute('data-title').toLowerCase();
+		           if (title.includes(searchInput)) {
+		               movie.style.display = '';
+		           } else {
+		               movie.style.display = 'none';
+		           }
+		       }
+		   }
+
+		  
+		   function selectMovie(movieElement) {
+		       const selectedMovie = movieElement.getAttribute('data-title');
+		       const selectedMovieId = movieElement.getAttribute('value');
+		       document.getElementById('movieInput').value = selectedMovieId;
+		       document.getElementById('movieSelect').value = selectedMovie;
+		       document.getElementById('movieList').style.display = 'none'; // Hide the list after selection
+		       alert(`You selected: ${selectedMovie}`);
+		   }
+
+		   const totalSeats = 100;  // You can dynamically get this value
+		          totalReservedSeats = Math.floor(totalSeats * 0.10); 
+    </script>
+</body>
+</html>

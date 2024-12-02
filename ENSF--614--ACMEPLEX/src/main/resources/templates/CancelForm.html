@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cancel Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .confirm-btn {
+            margin-top: 20px;
+        }
+        .info-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cancel Ticket</h1>
+
+        <!-- Ticket cancellation form -->
+        <p class="info-text">Enter your email address to locate your booking and cancel the ticket.</p>
+        <form th:action="@{/processCancel}" method="post">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Please enter youe email which was used for ticket booking" required>
+            <button type="submit">Cancel Ticket</button>
+        </form>
+
+        <!-- Display tickets after submission -->
+        <div th:if="${payments != null}">
+            <h2>Payments</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Theater</th>
+                        <th>Movie</th>
+                        <th>Show Time</th>
+                        <th>Seats</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="payment : ${payments}">
+                        <td th:text="${payment.theater}"></td>
+                        <td th:text="${payment.movie}"></td>
+                        <td th:text="${payment.showTime}"></td>
+                        <td th:text="${payment.selectedSeats}"></td>
+                        <td th:text="${payment.totalPrice}"></td>
+                        <td th:text="${payment.paymentStatus}"></td>
+                        <td>
+                            <form th:action="@{/deletePayment}" method="post">
+                                <input type="hidden" name="paymentId" th:value="${payment.id}" />
+                                <input type="hidden" name="email" th:value="${payment.email}" />
+                                <input type="hidden" name="selectedSeats" th:value="${payment.selectedSeats}" />
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Confirm Cancellation button -->
+            <form th:action="@{/confirmCancellation}" method="GET" class="confirm-btn">
+                <input type="hidden" name="email" th:value="${email}" />
+                <button type="submit">Confirm Cancellation</button>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p>Need help? Contact support at <a href="mailto:acmeplexmovieapp@gmail.com">acmeplexmovieapp@gmail.com</a>.</p>
+        </div>
+    </div>
+</body>
+</html>
