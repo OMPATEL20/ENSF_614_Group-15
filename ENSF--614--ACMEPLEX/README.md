@@ -35,7 +35,7 @@ To run the application, ensure the following database schema and data are proper
 5. **Run the Application**
    - Run the Spring Boot application using Maven:
      ```bash
-     mvn spring-boot:run
+     java -jar target/Acmeplex-0.0.1-SNAPSHOT.jar
      ```
 
 6. **Access the Application**
