@@ -82,7 +82,7 @@ public class SeatController {
         model.addAttribute("seats", result.get("seats"));
 
         // Reload the cancel-ticket page
-        return "cancelForm";
+        return "CancelForm";
     }
 
 }
