@@ -22,10 +22,10 @@ To run the application, ensure the following database schema and data are proper
 2. **Setup the Database**
    - Open your MySQL database.
    - Execute the script `QUERIES FOR ACMEPLEX`, which is available in the project structure, to set up the necessary tables and data.
- Also Open the file ENSF_614_Group-15\ENSF--614--ACMEPLEX\src\main\resources\application.properties and enter your Db server details. For db.user and db.password
+ 
 3. **Open the Project**
    - Open the project in your preferred IDE (e.g., Visual Studio Code or Spring Tool Suite).
-
+   - Also Open the file ENSF_614_Group-15\ENSF--614--ACMEPLEX\src\main\resources\application.properties and enter your Db server details. For db.user and db.password
 4. **Navigate to the Project Directory**
    - In the terminal, navigate to the project directory:
      ```bash
